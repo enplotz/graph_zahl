@@ -1,10 +1,50 @@
 %!TEX root = ../main.tex
 
 \begin{frame}
-\frametitle{Indexes}
+\frametitle{What can be indexed?}
 \begin{itemize}
-\item \emph{What index structures are available?}
-\item \emph{What can be indexed? What can be a key? What can be a value?}
-\item \emph{How are indexes managed, i.e., manually or automatically?}
+		\item Attributes of edges and vertices can be indexed
+		\item All standard data types (e.g. int, long, float, double, string) can be used as a key		
 \end{itemize}
 \end{frame} 
+
+\begin{frame}
+\frametitle{Types of indexes}
+There are three types of indexes:
+
+\begin{enumerate}
+	\item \textbf{Graph Index}
+	\item \textbf{Generic Index}
+	\item \textbf{Lucene Index}
+\end{enumerate}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Graph Index}
+\begin{itemize}
+	\item Supports regular expression queries
+	\item Objects of a given type are automatically added to the index
+	\item The user only has to define the class and the fields that should be indexed
+	\item Can index multiple attributes
+	\item Is updated automatically
+\end{itemize}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Generic Index}
+\begin{itemize}
+	\item Provides range-search lookups on a single attribute
+	\item No support for regular expression queries
+	\item The user has to add objects manually to the index
+	\item Can only have a single attribute as a key
+	\item Has to be updated manually by the application 
+\end{itemize}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Lucene Index}
+\begin{itemize}
+	\item Uses Apache Lucene\footnote{\url{http://lucene.apache.org/core/}} full-text indexing and search capabilities
+	\item Has to be updated manually by the application
+\end{itemize}
+\end{frame}
