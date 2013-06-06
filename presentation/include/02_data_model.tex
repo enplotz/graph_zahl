@@ -3,10 +3,10 @@
 \begin{frame}
 \frametitle{Data model}
 
-Data model corresponds to a \textbf{property graph} (similar to the lecture)
+Data model corresponds to a \textbf{property graph} (similar to the lecture) \pause
 \begin{itemize}
-	\item Nodes and Edges are Objects that can contain arbitrary properties.
-	\item Edges can be incoming, outgoing or bidirectional and always contain a weight
+	\item Nodes and Edges are Objects that can contain arbitrary properties. \pause
+	\item Edges can be incoming, outgoing or bidirectional and always contain a weight \pause
 	\item Java base classes for nodes (BaseNode) and edges (BaseEdge)
 	\begin{itemize}
 		\item[$\rightarrow$] define identity
@@ -23,10 +23,14 @@ Data model corresponds to a \textbf{property graph} (similar to the lecture)
 
 The basic data manipulation API:
 
+\pause
+
 \begin{lstlisting}[caption=(Creating / opening a DB)]
 GraphFactory.create(dbName);
 GraphDatabase db = GraphFactory.open(dbName);
 \end{lstlisting}
+
+\pause
 
 \begin{lstlisting}[caption=(Closing / deleting a DB)]
 db.close();
@@ -50,6 +54,8 @@ EdgeKind.BIDIRECTIONAL, weight);
 //BaseVertex, EdgeKind, weight);
 \end{lstlisting}
 
+\pause
+
 \begin{lstlisting}[caption=(Vertex / Edge retrieval)]
 db.getVertex(ID);
 db.getVertices();
@@ -69,12 +75,17 @@ db.removeEdge(friends1);
 db.removeEdgeByID(ID);
 \end{lstlisting}
 
+\pause
+
 Updates are up to the user!
-\begin{lstlisting}[User defined update method]
+\begin{lstlisting}[caption=(User defined update method)]
 person1.setName("Michael");
 \end{lstlisting}
+
+\pause
+
 \textbf{BUT:} Adding / removing additional properties not that easy $\rightarrow$ new subclass needed!
-\begin{lstlisting}[Subclass of Person with additional "age" property]
+\begin{lstlisting}[caption=(Subclass of Person with additional "age" property)]
 class PersonWithAge extends Person;
 
 void setAge(int age);
