@@ -70,11 +70,11 @@ db.removeEdgeByID(ID);
 \end{lstlisting}
 
 Updates are up to the user!
-\begin{lstlisting}[User defined update method]
+\begin{lstlisting}[caption=(User defined update method)]
 person1.setName("Michael");
 \end{lstlisting}
 \textbf{BUT:} Adding / removing additional properties not that easy $\rightarrow$ new subclass needed!
-\begin{lstlisting}[Subclass of Person with additional "age" property]
+\begin{lstlisting}[caption=(Subclass of Person with additional "age" property)]
 class PersonWithAge extends Person;
 
 void setAge(int age);
