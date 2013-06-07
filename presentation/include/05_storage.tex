@@ -5,10 +5,20 @@
 \begin{itemize}
 %\item \emph{How is data stored physically, i.e., file format and organization, data catalog, etc.?}
 %\item \emph{Where can data be stored physically, i.e., disk or file storage, in-memory (RAM), flash or SSD, traditional database, cloud storage (GFS, HDFS, S3), etc.?}
+%\item \emph{How is data accessed, i.e., how do read and write operations work?}
+\item Database can be spread over several servers with the help of "`Storage Locations"' and several other configurations
 \item In-memory capable as well as persistent on hard drive
 \item If on hard drive: files in a configurable directory
-\item Database can be configurably spread over several servers
-%\item \emph{How is data accessed, i.e., how do read and write operations work?}
-\item Not open source (proprietary file format, unknown inner workings)
+\item Edges and vertices are stored in seperate files
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Storage}
+\begin{itemize}
+\item Files consist of containers
+\item Containers consist of storage pages
+\item Containers are the smallest entity to lock
+\item Storage pages are the smallest entity for read/write
 \end{itemize}
 \end{frame} 
