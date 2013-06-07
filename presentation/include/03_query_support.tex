@@ -54,11 +54,8 @@ class IsMichaelQualifier implements Qualifier
     String name = new String("Michael");
     public boolean qualify(Path currentPath)
     {
-        if (name.equals(((Person) (currentPath
-            .getFinalHop().getVertex())).getName()))
-            return true;
-        else
-            return false;
+        return name.equals(((Person) (currentPath
+            .getFinalHop().getVertex())).getName());
     }
 }
 \end{lstlisting}
