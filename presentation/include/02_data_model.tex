@@ -12,11 +12,11 @@ Data model corresponds to a \textbf{property graph} (similar to the lecture) \pa
 		\item[$\rightarrow$] define identity
 		\item[$\rightarrow$] can be extended, attributes added
 		\item[$\rightarrow$] properties can be indexed (by \dquote{own} index
-		or by alternative indices like \textit{Apache Lucene}.
+		or by alternative indices like \textit{Apache Lucene})
 	\end{itemize}
 \end{itemize}
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Data model: API}
@@ -48,9 +48,9 @@ class Friends extends BaseEdge;
 
 long v1 = db.addVertex(person1);
 long v2 = db.addVertex(person2);
-long e1 = person1.addEdge(friends1, person2, 
+long e1 = person1.addEdge(friends1, person2,
 EdgeKind.BIDIRECTIONAL, weight);
-//long i = db.addEdge(BaseEdge, BaseVertex, 
+//long i = db.addEdge(BaseEdge, BaseVertex,
 //BaseVertex, EdgeKind, weight);
 \end{lstlisting}
 
@@ -95,13 +95,13 @@ void setAge(int age);
 \begin{frame}
 \frametitle{Data model: API}
 
-\textbf{Handles:} 
+\textbf{Handles:}
 \begin{itemize}
 	\item fast access to an object without retrieving the complete object
 	\item stores graph related information like neighbors
 	\item can be customized  by implementing the interfaces \textit{VertexHandle}
 	(edge count, edges), \textit{EdgeHandle} (weight, kind, peer)
-	
+
 \end{itemize}
-	
+
 \end{frame}
