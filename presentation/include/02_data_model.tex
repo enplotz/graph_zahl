@@ -3,30 +3,34 @@
 \begin{frame}
 \frametitle{Data model}
 
-Data model corresponds to a \textbf{property graph} (similar to the lecture)
+Data model corresponds to a \textbf{property graph} (similar to the lecture) \pause
 \begin{itemize}
-	\item Nodes and Edges are Objects that can contain arbitrary properties.
-	\item Edges can be incoming, outgoing or bidirectional and always contain a weight
+	\item Nodes and Edges are Objects that can contain arbitrary properties. \pause
+	\item Edges can be incoming, outgoing or bidirectional and always contain a weight \pause
 	\item Java base classes for nodes (BaseNode) and edges (BaseEdge)
 	\begin{itemize}
 		\item[$\rightarrow$] define identity
 		\item[$\rightarrow$] can be extended, attributes added
 		\item[$\rightarrow$] properties can be indexed (by \dquote{own} index
-		or by alternative indices like \textit{Apache Lucene}.
+		or by alternative indices like \textit{Apache Lucene})
 	\end{itemize}
 \end{itemize}
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Data model: API}
 
 The basic data manipulation API:
 
+\pause
+
 \begin{lstlisting}[caption=(Creating / opening a DB)]
 GraphFactory.create(dbName);
 GraphDatabase db = GraphFactory.open(dbName);
 \end{lstlisting}
+
+\pause
 
 \begin{lstlisting}[caption=(Closing / deleting a DB)]
 db.close();
@@ -44,11 +48,13 @@ class Friends extends BaseEdge;
 
 long v1 = db.addVertex(person1);
 long v2 = db.addVertex(person2);
-long e1 = person1.addEdge(friends1, person2, 
+long e1 = person1.addEdge(friends1, person2,
 EdgeKind.BIDIRECTIONAL, weight);
-//long i = db.addEdge(BaseEdge, BaseVertex, 
+//long i = db.addEdge(BaseEdge, BaseVertex,
 //BaseVertex, EdgeKind, weight);
 \end{lstlisting}
+
+\pause
 
 \begin{lstlisting}[caption=(Vertex / Edge retrieval)]
 db.getVertex(ID);
@@ -69,12 +75,17 @@ db.removeEdge(friends1);
 db.removeEdgeByID(ID);
 \end{lstlisting}
 
+\pause
+
 Updates are up to the user!
-\begin{lstlisting}[User defined update method]
+\begin{lstlisting}[caption=(User defined update method)]
 person1.setName("Michael");
 \end{lstlisting}
+
+\pause
+
 \textbf{BUT:} Adding / removing additional properties not that easy $\rightarrow$ new subclass needed!
-\begin{lstlisting}[Subclass of Person with additional "age" property]
+\begin{lstlisting}[caption=(Subclass of Person with additional "age" property)]
 class PersonWithAge extends Person;
 
 void setAge(int age);
@@ -84,13 +95,13 @@ void setAge(int age);
 \begin{frame}
 \frametitle{Data model: API}
 
-\textbf{Handles:} 
+\textbf{Handles:}
 \begin{itemize}
 	\item fast access to an object without retrieving the complete object
 	\item stores graph related information like neighbors
 	\item can be customized  by implementing the interfaces \textit{VertexHandle}
 	(edge count, edges), \textit{EdgeHandle} (weight, kind, peer)
-	
+
 \end{itemize}
-	
+
 \end{frame}
