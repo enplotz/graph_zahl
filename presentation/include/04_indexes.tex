@@ -1,14 +1,6 @@
 %!TEX root = ../main.tex
 
 \begin{frame}
-\frametitle{What can be indexed?}
-\begin{itemize}
-		\item Attributes of edges and vertices can be indexed
-		\item All standard data types (e.g. int, long, float, double, string) can be used as a key		
-\end{itemize}
-\end{frame} 
-
-\begin{frame}
 \frametitle{Types of indexes}
 There are three types of indexes:
 
@@ -22,22 +14,22 @@ There are three types of indexes:
 \begin{frame}
 \frametitle{Graph Index}
 \begin{itemize}
+	\pause
 	\item Supports regular expression queries \pause
-	\item Objects of a given type are automatically added to the index \pause
-	\item The user only has to define the class and the fields that should be indexed \pause
 	\item Can index multiple attributes \pause
-	\item Is updated automatically
+	\item Objects are automatically added to the index \pause
+	\item The user only has to define the class and the fields that should be indexed 
 \end{itemize}
 \end{frame} 
 
 \begin{frame}
 \frametitle{Generic Index}
 \begin{itemize}
+	\pause
 	\item Provides range-search lookups on a single attribute \pause
 	\item No support for regular expression queries \pause
-	\item The user has to add objects manually to the index \pause
 	\item Can only have a single attribute as a key \pause
-	\item Has to be updated manually by the application 
+	\item The user has to add objects manually to the index 
 \end{itemize}
 \end{frame} 
 
