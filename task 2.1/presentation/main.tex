@@ -1,0 +1,68 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\useinnertheme{rectangles}
+\useoutertheme{infolines}
+\usecolortheme{orchid}
+\setbeamercovered{transparent}
+\beamertemplatenavigationsymbolsempty
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage[numbers,sort&compress]{natbib}
+\bibliographystyle{plain}
+\usepackage{subfig}
+
+\title[Application Design]{\textsf{Application Design}}
+\subtitle{with InfiniteGraph}
+\author[JE,TG,JH,MH,FJ,JM,MS]{Jens \textit{Erat},
+Todor \textit{Georgiev},
+J\"{u}rgen \textit{H\"{o}lsch},
+Manuel \textit{Hotz},
+Florian \textit{Junghanns},
+Jens \textit{Metzner},
+Marc \textit{Spicker}}
+\institute[]{Universität Konstanz}
+\date{\today}
+
+\newcommand{\dquote}[1]{``#1''}
+
+\begin{document}
+
+\lstset{
+language=Java,
+keywordstyle=\color{purple},
+captionpos=b
+}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%##########################################################################################
+
+\begin{frame}
+\frametitle{Content}
+\tableofcontents
+\end{frame}
+
+%##########################################################################################
+
+\section{Data Model}
+\input{include/datamodel.tex}
+
+
+\section{Queries}
+\input{include/queries.tex}
+
+\end{document}
