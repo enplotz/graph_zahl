@@ -1,8 +1,50 @@
 %!TEX root = ../main.tex
 
-\begin{frame}
+\begin{frame}[fragile]
 \frametitle{Data model}
 
+\begin{itemize}
+	\item Show how the example graph instances are represented in the data model of your data store:
+\end{itemize}
 
+\begin{lstlisting}[caption=Person Mapping]
+	class Person extends BaseVertex {
+  final int id;
+  String name;
+  boolean gender;
+  String occupation;
+	}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Data model}
+\begin{lstlisting}[caption=Relationship Mapping]
+	class Relationship extends BaseEdge {
+  String relationship;
+	}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Data model}
+
+\begin{itemize}
+	\item Present variants you considered during the design phase:
+
+Since changes to the data model are tedious, it could be considered to store
+attributes in a map.
+
+\begin{lstlisting}[caption=Alternative attribute storage.]
+Map<String key, Object value> attributes;
+\end{lstlisting}
+
+	\item Explain why you believe the final solution is the best possible one:
+	\begin{itemize}
+		\item 	Native data modeling in a graph database environment
+		\item Attribute maps discarded as extensibility is no requirement
+	\end{itemize}
+\end{itemize}
 
 \end{frame}
