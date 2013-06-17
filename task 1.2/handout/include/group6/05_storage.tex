@@ -2,6 +2,19 @@
 
 \begin{itemize}
 \item \emph{How is data stored physically, i.e., file format and organization, data catalog, etc.?}
+  \begin{itemize}
+  \item File format is proprietary and based on the Objectivity database's file format.
+  \item Edges and vertices are stored in seperate files.
+  \item Files are seperated into containers consisting of storage pages.
+  \end{itemize}
 \item \emph{Where can data be stored physically, i.e., disk or file storage, in-memory (RAM), flash or SSD, traditional database, cloud storage (GFS, HDFS, S3), etc.?}
+  \begin{itemize}
+  \item Generally, data is simply stored on hard drives, SSD optimizations or similar are not mentioned.
+  \item InfiniteGraph is said to be in-memory capable.
+  \end{itemize}
 \item \emph{How is data accessed, i.e., how do read and write operations work?}
+  \begin{itemize}
+  \item Containers are the smallest entity to lock.
+  \item Storage pages are the smallest entity to read or write.
+  \end{itemize}
 \end{itemize}
