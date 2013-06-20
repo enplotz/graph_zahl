@@ -1,8 +1,68 @@
 %!TEX root = ../main.tex
 
-\begin{frame}
-\frametitle{Queries}
+\begin{frame}[fragile]
+\frametitle{Queries - Friends of Friends}
+
+\begin{lstlisting}
+// the Gremlin option: person.out.out
+
+Navigator friendsOfFriends = 
+  person.navigate(Guide.SIMPLE_BREADTH_FIRST,
+    new Qualifier() {
+      public boolean qualify(Path currentPath) {
+        return currentPath.size() < 3;
+      }
+    },
+    new Qualifier() {
+      public boolean qualify(Path currentPath) {
+        return currentPath.size() == 2;
+      }
+    },
+    new PrintPathResultHandler()
+  )
+\end{lstlisting}
+\end{frame}
 
 
 
+\begin{frame}[fragile]
+\frametitle{Queries - Transitive Closure}
+
+\begin{lstlisting}
+foreach (Vertex v1 : db.getVertices()) {
+  foreach (Vertex v2 : transClosureForVertex(v1)) {  
+    if (!db.edgeExists(v1, v2)) {
+      db.addEdge(new Edge(), v1, v2);
+    }
+  }
+}
+
+function transClosureForVertex(v) {
+  Navigator transclosure = v.navigate(
+    Guide.SIMPLE_DEPTH_FIRST, 
+    Qualifier.FOREVER,
+    Qualifier.ANY,
+    new NavigationResultHandler());
+  return transClosure.allVertices();
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Queries - Bridges}
+
+\begin{lstlisting}
+foreach (Edge e : db.getEdges()) {
+  Vertex v = e.source();
+  v.setEdgeUntraversable(e);
+  List<Vertex> transClosure
+    = transClosureForVertex(v);
+  if (!transClosure.contains(e.target())) {
+    print("Edge e is a bridge!");
+  }
+  v.setEdgeTraversable(e);
+}
+\end{lstlisting}
 \end{frame}
