@@ -1,8 +1,24 @@
 %!TEX root = ../../main.tex
 
-\begin{itemize}
-\item \emph{How would you classify the system according to CAP and PAC/ELC?}
-\item \emph{Does the system support transactions?}
-\item \emph{How are transactions implemented, i.e., locks, OCC, MVCC, etc.?}
-\item \emph{What consistency guarantees are given?}
-\end{itemize}
+InfiniteGraph supports two transaction models,
+\emph{Standard Ingest}which offers full ACID transactions and
+\emph{Accelerated Ingest} which implements some kind of eventual consistency.
+Ingest means loading data into the database.
+
+\subsubsection{Standard Ingest}
+
+Standard Ingest offers full ACID transactions, thus can be classified as CP respective PC/EC.
+Page-level read/write locks are used for concurrency control, but no further details are given.
+After committing, the graph is immediately consistent.
+
+\subsubsection{Advanced Ingest}
+
+Few information is given on the actual implementation.
+While some hints could be derived from Objectity DB (which is used for persisting the graph),
+it is harmful to do so due to lack on details on the mapping between InfiniteGraph and Objectivity DB.
+
+Advanced Ingest offers some kind of eventual consistency that is not further explained.
+No definite information on CAP respective PAC/ELC is given;
+but P?/EL can be derived from the fact consistency is eventual.
+
+Transactions are supported for rollback, but no information is given on conflict resolution.
