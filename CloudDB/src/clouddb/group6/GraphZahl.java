@@ -118,23 +118,104 @@ public class GraphZahl {
 
 			final Person p1 = new Person(1, "George Bluth, Sr.", true, "Fugitive");
 			final Person p2 = new Person(2, "Oscar Bluth", true, "");
-			// TODO add more persons
-
-
+			final Person p3 = new Person(3, "George Oscar \"GOB\" Bluth", true, "Magician");
+			final Person p4 = new Person(4, "Tobias Fünke", true, "Unemployed Actor");
+			final Person p5 = new Person(5, "Lindsay Fünke", false, "Activist");
+			final Person p6 = new Person(6, "Lucille Bluth", false, "");
+			final Person p7 = new Person(7, "Byron \"Buster\" Bluth", true, "Seal Victim");
+			final Person p8 = new Person(8, "Michael Bluth", true, "Bluth Company CEO");
+			final Person p9 = new Person(9, "George Michael Bluth", true, "Student");
+			final Person p10 = new Person(10, "Tracy Bluth", false, "");
+			final Person p11 = new Person(11, "Mae \"Maeby\" Fünke", false, "Student");
+			final Person p12 = new Person(12, "Surely Woolfbeek", false, "Imaginary Character");
+			final Person p13 = new Person(13, "Steve Holt", true, "Student");
+			final Person p14 = new Person(14, "Eve Holt", false, "");
+			
 			graphDB.addVertex(p1);
 			logger.info(">> Added " + p1.getId());
 			graphDB.addVertex(p2);
 			logger.info(">> Added " + p2.getId());
-			// TODO add more vertices
-
+			graphDB.addVertex(p3);
+			logger.info(">> Added " + p3.getId());
+			graphDB.addVertex(p4);
+			logger.info(">> Added " + p4.getId());
+			graphDB.addVertex(p5);
+			logger.info(">> Added " + p5.getId());
+			graphDB.addVertex(p6);
+			logger.info(">> Added " + p6.getId());
+			graphDB.addVertex(p7);
+			logger.info(">> Added " + p7.getId());
+			graphDB.addVertex(p8);
+			logger.info(">> Added " + p8.getId());
+			graphDB.addVertex(p9);
+			logger.info(">> Added " + p9.getId());
+			graphDB.addVertex(p10);
+			logger.info(">> Added " + p10.getId());
+			graphDB.addVertex(p11);
+			logger.info(">> Added " + p11.getId());
+			graphDB.addVertex(p12);
+			logger.info(">> Added " + p12.getId());
+			graphDB.addVertex(p13);
+			logger.info(">> Added " + p13.getId());
+			graphDB.addVertex(p14);
+			logger.info(">> Added " + p14.getId());
+			
 			final Relationship r12 = new Relationship("Brother");
 			final Relationship r21 = new Relationship("Brother");
-			// TODO add more relationships
+			final Relationship r16 = new Relationship("Wife");
+			final Relationship r61 = new Relationship("Husband");
+			final Relationship r23 = new Relationship("Uncle");
+			final Relationship r32 = new Relationship("Nephew");
+			final Relationship r45 = new Relationship("Husband");
+			final Relationship r54 = new Relationship("Wife");
+			final Relationship r67 = new Relationship("Mother");
+			final Relationship r76 = new Relationship("Son");
+			final Relationship r38 = new Relationship("Brother");
+			final Relationship r83 = new Relationship("Brother");
+			final Relationship r58 = new Relationship("Sister");
+			final Relationship r85 = new Relationship("Sister");
+			final Relationship r78 = new Relationship("Brother");
+			final Relationship r87 = new Relationship("Brother");
+			final Relationship r89 = new Relationship("Father");
+			final Relationship r98 = new Relationship("Son");
+			final Relationship r910 = new Relationship("Son");
+			final Relationship r109 = new Relationship("Mother");
+			final Relationship r911 = new Relationship("Cousin, maybe");
+			final Relationship r119 = new Relationship("Cousin, maybe");
+			final Relationship r1112 = new Relationship("Alter Ego");
+			final Relationship r14 = new Relationship("Father-in-Law");
+			final Relationship r41 = new Relationship("Son-in-Law");
+			final Relationship r1314 = new Relationship("Son");
+			final Relationship r1413 = new Relationship("Mother");
 
 			p1.addEdge(r12, p2, EdgeKind.OUTGOING, (short) 0.15);
 			p2.addEdge(r21, p1, EdgeKind.OUTGOING, (short) 0.15);
-			// TODO add more edges
-
+			p1.addEdge(r16, p6, EdgeKind.OUTGOING, (short) 0.48);
+			p6.addEdge(r61, p1, EdgeKind.OUTGOING, (short) 0.48);
+			p2.addEdge(r23, p3, EdgeKind.OUTGOING, (short) 0.5);
+			p3.addEdge(r32, p2, EdgeKind.OUTGOING, (short) 0.5);
+			p4.addEdge(r45, p5, EdgeKind.OUTGOING, (short) 0.03);
+			p5.addEdge(r54, p4, EdgeKind.OUTGOING, (short) 0.03);
+			p6.addEdge(r67, p7, EdgeKind.OUTGOING, (short) 0.86);
+			p7.addEdge(r76, p6, EdgeKind.OUTGOING, (short) 0.86);
+			p3.addEdge(r38, p8, EdgeKind.OUTGOING, (short) 0.9);
+			p8.addEdge(r83, p3, EdgeKind.OUTGOING, (short) 0.9);
+			p5.addEdge(r58, p8, EdgeKind.OUTGOING, (short) 0.65);
+			p8.addEdge(r85, p5, EdgeKind.OUTGOING, (short) 0.65);
+			p7.addEdge(r78, p8, EdgeKind.OUTGOING, (short) 0.27);
+			p8.addEdge(r87, p7, EdgeKind.OUTGOING, (short) 0.27);
+			p8.addEdge(r89, p9, EdgeKind.OUTGOING, (short) 0.54);
+			p9.addEdge(r98, p8, EdgeKind.OUTGOING, (short) 0.54);
+			p9.addEdge(r910, p10, EdgeKind.OUTGOING, (short) 0.94);
+			p10.addEdge(r109, p9, EdgeKind.OUTGOING, (short) 0.94);
+			p9.addEdge(r911, p11, EdgeKind.OUTGOING, (short) 0.87);
+			p11.addEdge(r119, p9, EdgeKind.OUTGOING, (short) 0.87);
+			p11.addEdge(r1112, p12, EdgeKind.OUTGOING, (short) 0.19);
+			p1.addEdge(r14, p4, EdgeKind.OUTGOING, (short) 0.72);
+			p4.addEdge(r41, p1, EdgeKind.OUTGOING, (short) 0.72);
+			p13.addEdge(r1314, p14, EdgeKind.OUTGOING, (short) 0.57);
+			p14.addEdge(r1413, p13, EdgeKind.OUTGOING, (short) 0.57);
+			
 			logger.info("> Committing sample data ...");
 			tx.commit();
 		} catch (final Exception e){
