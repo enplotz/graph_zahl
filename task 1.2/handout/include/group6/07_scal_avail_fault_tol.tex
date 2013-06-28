@@ -1,10 +1,53 @@
 %!TEX root = ../../main.tex
-
 \begin{itemize}
+
+\item
+\begin{itemize}
+	\item very Good scalability
+	\item The goal is to create a graph database with virtually unlimited scalability
+	\item It is said that infinite graph can search billions of connections and relationships in massive volumes of complex data
+\end{itemize}
+
 \item \emph{What types of scalability are supported, i.e., horizontal and/or vertical?}
+\begin{itemize}
+	\item Supports horizontal scalability
+\end{itemize}
+
+
+
 \item \emph{What types of data partitioning are supported, i.e., horizontal (sharding) and/or vertical?}
+\begin{itemize}
+	\item Autonomous partition structure
+	\item Autonomous partitions are independent from network and system failures
+	\item Each has own lock server and a complete architecture
+	\item Each contains references to other partitions
+\end{itemize}
+
 \item \emph{What types of data replication are supported, i.e., synchronous and/or asynchronous?}
+\begin{itemize}
+	\item Synchronous data replication
+	\item If one database image is updated, a min number of other replicas are updated also
+	\item min number of images represents consistent view of he database
+\end{itemize}
+
 \item \emph{How is scalability achieved?}
+\begin{itemize}
+	\item Distributed data tier supports parallel IO
+	\item Distributed cash/processor tier
+	\item Quorum protocol
+\end{itemize}
+
 \item \emph{How is fault tolerance achieved?}
+\begin{itemize}
+	\item Objectivity/DB Fault Tolerant Option
+	\item Services are distributed and relocated so that each partition is self-sufficient in case of failure in other partitions
+\end{itemize}
+
 \item \emph{How is availability achieved?}
+\begin{itemize}
+\item Strive for high availability
+\item Reads requested information from closest copy
+\item Multiple network or machine failures possible before databases become unavailable
+\end{itemize}
+
 \end{itemize}
