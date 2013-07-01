@@ -5,6 +5,8 @@
 
 *.class
 
+CloudDB/data/*
+
 # Package Files #
 *.jar
 *.war
