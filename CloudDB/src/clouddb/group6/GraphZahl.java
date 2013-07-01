@@ -1,7 +1,9 @@
 package clouddb.group6;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,11 @@ import com.infinitegraph.Transaction;
 import com.infinitegraph.indexing.IndexDescription;
 import com.infinitegraph.indexing.IndexException;
 import com.infinitegraph.indexing.IndexManager;
+import com.infinitegraph.navigation.Guide;
+import com.infinitegraph.navigation.NavigationResultHandler;
+import com.infinitegraph.navigation.Navigator;
+import com.infinitegraph.navigation.Path;
+import com.infinitegraph.navigation.Qualifier;
 
 public class GraphZahl {
 
@@ -29,28 +36,29 @@ public class GraphZahl {
 	private static final String graphDbName = "GraphZahl";
 	private static final String propFile = "config/CloudDB.properties";
 
-
 	private static boolean setUpDB() {
 		try {
-			//	try{
-			//		// this is broken for some reason b/c our license seems to be wrong!?
-			//		GraphFactory.delete(graphDbName, propFile);
-			//	} catch (final StorageException e) {
-			//		logger.info(e.getMessage());
-			//	}
+			// try{
+			// // this is broken for some reason b/c our license seems to be
+			// wrong!?
+			// GraphFactory.delete(graphDbName, propFile);
+			// } catch (final StorageException e) {
+			// logger.info(e.getMessage());
+			// }
 
-			try{
+			try {
 				logger.info("> Creating graph database ...");
-				GraphFactory.create(graphDbName,propFile);
+				GraphFactory.create(graphDbName, propFile);
 			} catch (final StorageException e) {
 				logger.info(e.getMessage());
 			}
 
 			// Open graph database
 			logger.info("> Opening graph database ...");
-			graphDB = GraphFactory.open(graphDbName,propFile);
+			graphDB = GraphFactory.open(graphDbName, propFile);
 
-			ensureGraphIndex("personGraphIndex", Person.class.getName(), new String[]{"id"}, true);
+			ensureGraphIndex("personGraphIndex", Person.class.getName(),
+					new String[] { "id" }, true);
 
 			return graphDB != null;
 		} catch (final ConfigurationException e) {
@@ -66,34 +74,40 @@ public class GraphZahl {
 	/**
 	 * Ensures that the given index is set.
 	 * 
-	 * @param graphIndexName the name of the GraphIndex
-	 * @param indexedClassName the indexed classes name
-	 * @param indexedFields the indexed fields of the class
-	 * @param isUnique if the index allows indexing different values for same key
+	 * @param graphIndexName
+	 *            the name of the GraphIndex
+	 * @param indexedClassName
+	 *            the indexed classes name
+	 * @param indexedFields
+	 *            the indexed fields of the class
+	 * @param isUnique
+	 *            if the index allows indexing different values for same key
 	 * @throws IndexException
 	 */
-	private static void ensureGraphIndex(final String graphIndexName, final String indexedClassName,
-			final String[] indexedFields, final boolean isUnique) throws IndexException {
+	private static void ensureGraphIndex(final String graphIndexName,
+			final String indexedClassName, final String[] indexedFields,
+			final boolean isUnique) throws IndexException {
 		final IndexDescription[] indices = IndexManager.listAllGraphIndexes();
 		boolean exists = false;
 		// scan all graph indices for matching index
 		// shallow-compare given arrays
 		for (final IndexDescription id : indices) {
-			if(	id.getIndexName().equals(graphIndexName) &&
-					id.getIndexedClass().equals(indexedClassName) &&
-					Arrays.equals(id.getIndexedFields(), indexedFields)){
+			if (id.getIndexName().equals(graphIndexName)
+					&& id.getIndexedClass().equals(indexedClassName)
+					&& Arrays.equals(id.getIndexedFields(), indexedFields)) {
 				exists = true;
 				break;
 			}
 		}
-		if(!exists){
+		if (!exists) {
 			Transaction tx = null;
-			try{
+			try {
 				tx = graphDB.beginTransaction(AccessMode.READ_WRITE);
-				IndexManager.addGraphIndex(graphIndexName, indexedClassName, indexedFields, isUnique);
+				IndexManager.addGraphIndex(graphIndexName, indexedClassName,
+						indexedFields, isUnique);
 				logger.info("Creating index: " + graphIndexName);
 				tx.commit();
-			} catch (final Exception e){
+			} catch (final Exception e) {
 				logger.info(e.getLocalizedMessage());
 				tx.rollback();
 			} finally {
@@ -112,25 +126,33 @@ public class GraphZahl {
 
 	private static void loadSampleGraph() {
 		Transaction tx = null;
-		try{
+		try {
 			logger.info("> Starting sample data write transaction ...");
 			tx = graphDB.beginTransaction(AccessMode.READ_WRITE);
 
-			final Person p1 = new Person(1, "George Bluth, Sr.", true, "Fugitive");
+			final Person p1 = new Person(1, "George Bluth, Sr.", true,
+					"Fugitive");
 			final Person p2 = new Person(2, "Oscar Bluth", true, "");
-			final Person p3 = new Person(3, "George Oscar \"GOB\" Bluth", true, "Magician");
-			final Person p4 = new Person(4, "Tobias Fünke", true, "Unemployed Actor");
-			final Person p5 = new Person(5, "Lindsay Fünke", false, "Activist");
+			final Person p3 = new Person(3, "George Oscar \"GOB\" Bluth", true,
+					"Magician");
+			final Person p4 = new Person(4, "Tobias Fünke", true,
+					"Unemployed Actor");
+			final Person p5 = new Person(5, "Lindsay Fünke", false, "Activist");
 			final Person p6 = new Person(6, "Lucille Bluth", false, "");
-			final Person p7 = new Person(7, "Byron \"Buster\" Bluth", true, "Seal Victim");
-			final Person p8 = new Person(8, "Michael Bluth", true, "Bluth Company CEO");
-			final Person p9 = new Person(9, "George Michael Bluth", true, "Student");
+			final Person p7 = new Person(7, "Byron \"Buster\" Bluth", true,
+					"Seal Victim");
+			final Person p8 = new Person(8, "Michael Bluth", true,
+					"Bluth Company CEO");
+			final Person p9 = new Person(9, "George Michael Bluth", true,
+					"Student");
 			final Person p10 = new Person(10, "Tracy Bluth", false, "");
-			final Person p11 = new Person(11, "Mae \"Maeby\" Fünke", false, "Student");
-			final Person p12 = new Person(12, "Surely Woolfbeek", false, "Imaginary Character");
+			final Person p11 = new Person(11, "Mae \"Maeby\" Fünke", false,
+					"Student");
+			final Person p12 = new Person(12, "Surely Woolfbeek", false,
+					"Imaginary Character");
 			final Person p13 = new Person(13, "Steve Holt", true, "Student");
 			final Person p14 = new Person(14, "Eve Holt", false, "");
-			
+
 			graphDB.addVertex(p1);
 			logger.info(">> Added " + p1.getId());
 			graphDB.addVertex(p2);
@@ -159,7 +181,7 @@ public class GraphZahl {
 			logger.info(">> Added " + p13.getId());
 			graphDB.addVertex(p14);
 			logger.info(">> Added " + p14.getId());
-			
+
 			final Relationship r12 = new Relationship("Brother");
 			final Relationship r21 = new Relationship("Brother");
 			final Relationship r16 = new Relationship("Wife");
@@ -215,34 +237,10 @@ public class GraphZahl {
 			p4.addEdge(r41, p1, EdgeKind.OUTGOING, (short) 0.72);
 			p13.addEdge(r1314, p14, EdgeKind.OUTGOING, (short) 0.57);
 			p14.addEdge(r1413, p13, EdgeKind.OUTGOING, (short) 0.57);
-			
+
 			logger.info("> Committing sample data ...");
 			tx.commit();
-		} catch (final Exception e){
-			e.printStackTrace();
-			tx.rollback();
-		} finally{
-			tx.complete();
-		}
-	}
-
-	public static void query(final String q) {
-		Transaction tx = null;
-		try{
-			tx = graphDB.beginTransaction(AccessMode.READ);
-			final Query<Person> res = graphDB
-					.createQuery(Person.class.getName(), q);
-			try {
-				final Iterator<Person> iter = res.execute();
-				while (iter.hasNext()) {
-					final Person p = iter.next();
-					logger.info(">> found: Person{" + p.getId() + "," + p.name + ", " + p.id + "}");
-				}
-			} catch (final GraphException e) {
-				e.printStackTrace();
-			}
-			tx.commit();
-		} catch (final Exception e){
+		} catch (final Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		} finally {
@@ -250,14 +248,91 @@ public class GraphZahl {
 		}
 	}
 
+	public static Person queryPersonByName(final String name) {
+		Transaction tx = null;
+		Person result = null;
+		try {
+			tx = graphDB.beginTransaction(AccessMode.READ);
+			final Query<Person> res = graphDB.createQuery(
+					Person.class.getName(), "name='" + name + "'");
+			try {
+				final Iterator<Person> iter = res.execute();
+				while (iter.hasNext()) {
+					final Person p = iter.next();
+					logger.info(">> found: Person{" + p.getId() + "," + p.name
+							+ ", " + p.id + "}");
+					result = p;
+				}
+			} catch (final GraphException e) {
+				e.printStackTrace();
+			}
+			tx.commit();
+		} catch (final Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+		} finally {
+			tx.complete();
+		}
+		return result;
+	}
+
+	public static List<Person> friendsOfFriends(final Person person) {
+		Transaction tx = null;
+		final List<Person> result = new ArrayList<Person>();
+
+		tx = graphDB.beginTransaction(AccessMode.READ);
+		final Navigator navi = person.navigate(Guide.SIMPLE_BREADTH_FIRST,
+				new Qualifier() {
+
+					@Override
+					public boolean qualify(final Path p) {
+						return p.size() < 4;
+					}
+				}, new Qualifier() {
+
+					@Override
+					public boolean qualify(final Path p) {
+						return p.size() == 3;
+					}
+				}, new NavigationResultHandler() {
+
+					@Override
+					public void handleResultPath(final Path p, final Navigator n) {
+						// needed to load data ?!
+						p.getFinalHop().getVertex().toString();
+						result.add((Person) p.getFinalHop().getVertex());
+					}
+
+					@Override
+					public void handleNavigatorFinished(final Navigator n) {
+						logger.info("Friends of friends done!");
+					}
+				});
+
+		navi.start();
+		navi.stop();
+
+		tx.commit();
+		tx.complete();
+
+		return result;
+	}
+
 	public static void main(final String[] args) {
 		// wether the db was set up/connected properly
 		final boolean setup = setUpDB();
-		if(!setup) return;
+		if (!setup)
+			return;
 
 		final boolean sampleLoaded = testSampleGraphImported();
-		if(!sampleLoaded) loadSampleGraph();
-		query("name=='Oscar Bluth'");
+		if (!sampleLoaded)
+			loadSampleGraph();
+		final Person oscar = queryPersonByName("Michael Bluth");
+		final List<Person> fof = friendsOfFriends(oscar);
+		for (final Person p : fof) {
+			System.out.println(p.id);
+		}
+
 		closeDB();
 	}
 
@@ -266,13 +341,13 @@ public class GraphZahl {
 		boolean imported = false;
 		try {
 			tx = graphDB.beginTransaction(AccessMode.READ);
-			final Query<Person> res = graphDB
-					.createQuery(Person.class.getName(), "");
+			final Query<Person> res = graphDB.createQuery(
+					Person.class.getName(), "");
 			try {
 				final Iterator<Person> iter = res.execute();
 				// if we got any person node, we assume for now
 				// that all sample data is present
-				if(imported = iter.hasNext()){
+				if (imported = iter.hasNext()) {
 					logger.info(">> Sample data already imported.");
 				}
 			} catch (final GraphException e) {
@@ -285,7 +360,8 @@ public class GraphZahl {
 		} finally {
 			tx.complete();
 		}
-		if(!imported) logger.info(">> Seems like no import has been done yet...");
+		if (!imported)
+			logger.info(">> Seems like no import has been done yet...");
 		return imported;
 	}
 
