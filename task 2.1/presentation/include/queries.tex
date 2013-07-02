@@ -56,13 +56,12 @@ function transClosureForVertex(v) {
 \begin{lstlisting}
 foreach (Edge e : db.getEdges()) {
   Vertex v = e.source();
-  v.setEdgeUntraversable(e);
+  v.removeEdgeFromGraphView(e);
   List<Vertex> transClosure
     = transClosureForVertex(v);
   if (!transClosure.contains(e.target())) {
     print("Edge e is a bridge!");
   }
-  v.setEdgeTraversable(e);
 }
 \end{lstlisting}
 \end{frame}
