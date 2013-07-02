@@ -2,8 +2,10 @@ package clouddb.group6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import com.infinitegraph.AccessMode;
 import com.infinitegraph.BaseEdge;
 import com.infinitegraph.BaseVertex;
 import com.infinitegraph.ConfigurationException;
+import com.infinitegraph.Edge;
 import com.infinitegraph.EdgeKind;
 import com.infinitegraph.GraphDatabase;
 import com.infinitegraph.GraphException;
@@ -22,6 +25,7 @@ import com.infinitegraph.Transaction;
 import com.infinitegraph.indexing.IndexDescription;
 import com.infinitegraph.indexing.IndexException;
 import com.infinitegraph.indexing.IndexManager;
+import com.infinitegraph.navigation.GraphView;
 import com.infinitegraph.navigation.Guide;
 import com.infinitegraph.navigation.NavigationResultHandler;
 import com.infinitegraph.navigation.Navigator;
@@ -182,33 +186,33 @@ public class GraphZahl {
 			graphDB.addVertex(p14);
 			logger.info(">> Added " + p14.getId());
 
-			final Relationship r12 = new Relationship("Brother");
-			final Relationship r21 = new Relationship("Brother");
-			final Relationship r16 = new Relationship("Wife");
-			final Relationship r61 = new Relationship("Husband");
-			final Relationship r23 = new Relationship("Uncle");
-			final Relationship r32 = new Relationship("Nephew");
-			final Relationship r45 = new Relationship("Husband");
-			final Relationship r54 = new Relationship("Wife");
-			final Relationship r67 = new Relationship("Mother");
-			final Relationship r76 = new Relationship("Son");
-			final Relationship r38 = new Relationship("Brother");
-			final Relationship r83 = new Relationship("Brother");
-			final Relationship r58 = new Relationship("Sister");
-			final Relationship r85 = new Relationship("Sister");
-			final Relationship r78 = new Relationship("Brother");
-			final Relationship r87 = new Relationship("Brother");
-			final Relationship r89 = new Relationship("Father");
-			final Relationship r98 = new Relationship("Son");
-			final Relationship r910 = new Relationship("Son");
-			final Relationship r109 = new Relationship("Mother");
-			final Relationship r911 = new Relationship("Cousin, maybe");
-			final Relationship r119 = new Relationship("Cousin, maybe");
-			final Relationship r1112 = new Relationship("Alter Ego");
-			final Relationship r14 = new Relationship("Father-in-Law");
-			final Relationship r41 = new Relationship("Son-in-Law");
-			final Relationship r1314 = new Relationship("Son");
-			final Relationship r1413 = new Relationship("Mother");
+			final Relationship r12 = new Relationship(12, "Brother");
+			final Relationship r21 = new Relationship(21, "Brother");
+			final Relationship r16 = new Relationship(16, "Wife");
+			final Relationship r61 = new Relationship(61, "Husband");
+			final Relationship r23 = new Relationship(23, "Uncle");
+			final Relationship r32 = new Relationship(32, "Nephew");
+			final Relationship r45 = new Relationship(45, "Husband");
+			final Relationship r54 = new Relationship(54, "Wife");
+			final Relationship r67 = new Relationship(67, "Mother");
+			final Relationship r76 = new Relationship(76, "Son");
+			final Relationship r38 = new Relationship(38, "Brother");
+			final Relationship r83 = new Relationship(83, "Brother");
+			final Relationship r58 = new Relationship(58, "Sister");
+			final Relationship r85 = new Relationship(85, "Sister");
+			final Relationship r78 = new Relationship(78, "Brother");
+			final Relationship r87 = new Relationship(87, "Brother");
+			final Relationship r89 = new Relationship(89, "Father");
+			final Relationship r98 = new Relationship(98, "Son");
+			final Relationship r910 = new Relationship(910, "Son");
+			final Relationship r109 = new Relationship(109, "Mother");
+			final Relationship r911 = new Relationship(911, "Cousin, maybe");
+			final Relationship r119 = new Relationship(119, "Cousin, maybe");
+			final Relationship r1112 = new Relationship(1112, "Alter Ego");
+			final Relationship r14 = new Relationship(14, "Father-in-Law");
+			final Relationship r41 = new Relationship(41, "Son-in-Law");
+			final Relationship r1314 = new Relationship(1314, "Son");
+			final Relationship r1413 = new Relationship(1413, "Mother");
 
 			p1.addEdge(r12, p2, EdgeKind.OUTGOING, (short) 0.15);
 			p2.addEdge(r21, p1, EdgeKind.OUTGOING, (short) 0.15);
@@ -249,18 +253,37 @@ public class GraphZahl {
 	}
 
 	public static Person queryPersonByName(final String name) {
-		Transaction tx = null;
 		Person result = null;
+		final Query<Person> res = graphDB.createQuery(Person.class.getName(),
+				"name='" + name + "'");
+		try {
+			final Iterator<Person> iter = res.execute();
+			while (iter.hasNext()) {
+				final Person p = iter.next();
+				logger.info(">> found: Person{" + p.getId() + "," + p.name
+						+ ", " + p.id + "}");
+				result = p;
+			}
+		} catch (final GraphException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public static Relationship queryRelationshipByName(final String name) {
+		Transaction tx = null;
+		Relationship result = null;
 		try {
 			tx = graphDB.beginTransaction(AccessMode.READ);
-			final Query<Person> res = graphDB.createQuery(
-					Person.class.getName(), "name='" + name + "'");
+			final Query<Relationship> res = graphDB
+					.createQuery(Relationship.class.getName(), "relationship='"
+							+ name + "'");
 			try {
-				final Iterator<Person> iter = res.execute();
+				final Iterator<Relationship> iter = res.execute();
 				while (iter.hasNext()) {
-					final Person p = iter.next();
-					logger.info(">> found: Person{" + p.getId() + "," + p.name
-							+ ", " + p.id + "}");
+					final Relationship p = iter.next();
+					logger.info(">> found: Relation{" + p.getId() + ","
+							+ p.getRelationship() + "}");
 					result = p;
 				}
 			} catch (final GraphException e) {
@@ -276,11 +299,60 @@ public class GraphZahl {
 		return result;
 	}
 
+	public static boolean isBridge(final Relationship r) {
+
+		final Person source = (Person) r.getOrigin().getVertex();
+		final Person target = (Person) r.getTarget().getVertex();
+
+		final GraphView view = new GraphView();
+		view.excludeClass(graphDB.getTypeId(Relationship.class.getName()),
+				"identifier ==" + r.getIdentifier());
+
+		final Set<Person> fromSource = transitivelyReachable(view, source);
+		final Set<Person> fromTarget = transitivelyReachable(view, target);
+		if (fromSource.contains(target)) {
+			return false;
+		}
+		if (fromTarget.contains(source)) {
+			return false;
+		}
+		return true;
+	}
+
+	public static Set<Person> transitivelyReachable(final Person person) {
+		return transitivelyReachable(null, person);
+	}
+
+	public static Set<Person> transitivelyReachable(final GraphView view,
+			final Person person) {
+		final Set<Person> result = new HashSet<Person>();
+
+		final Navigator navi = person.navigate(view, Guide.SIMPLE_DEPTH_FIRST,
+				Qualifier.FOREVER, Qualifier.ANY, null,
+				new NavigationResultHandler() {
+
+					@Override
+					public void handleResultPath(final Path p, final Navigator n) {
+						// needed to load data ?!
+						p.getFinalHop().getVertex().toString();
+						result.add((Person) p.getFinalHop().getVertex());
+					}
+
+					@Override
+					public void handleNavigatorFinished(final Navigator n) {
+						// no-op
+					}
+				});
+
+		navi.start();
+		navi.stop();
+
+		return result;
+	}
+
 	public static List<Person> friendsOfFriends(final Person person) {
-		Transaction tx = null;
 		final List<Person> result = new ArrayList<Person>();
 
-		tx = graphDB.beginTransaction(AccessMode.READ);
 		final Navigator navi = person.navigate(Guide.SIMPLE_BREADTH_FIRST,
 				new Qualifier() {
 
@@ -312,9 +384,6 @@ public class GraphZahl {
 		navi.start();
 		navi.stop();
 
-		tx.commit();
-		tx.complete();
-
 		return result;
 	}
 
@@ -327,11 +396,34 @@ public class GraphZahl {
 		final boolean sampleLoaded = testSampleGraphImported();
 		if (!sampleLoaded)
 			loadSampleGraph();
-		final Person oscar = queryPersonByName("Michael Bluth");
+
+		final Transaction tx = graphDB.beginTransaction(AccessMode.READ);
+
+		final Person oscar = queryPersonByName("Oscar Bluth");
+		logger.info("Friends of friends of Oscar Bluth");
 		final List<Person> fof = friendsOfFriends(oscar);
 		for (final Person p : fof) {
-			System.out.println(p.id);
+			logger.info(String.valueOf(p.id));
 		}
+
+		logger.info("Transitively reachable from Oscar Bluth");
+		final Set<Person> res = transitivelyReachable(oscar);
+		for (final Person p : res) {
+			logger.info(String.valueOf(p.id));
+		}
+
+		logger.info("Find all Bridges in the graph:");
+		final Iterable<Edge> edges = graphDB.getEdges();
+
+		for (final Edge e : edges) {
+			final Relationship r = (Relationship) e;
+			if (isBridge(r)) {
+				logger.info("Bridge: " + r.getIdentifier());
+			}
+		}
+
+		tx.commit();
+		tx.complete();
 
 		closeDB();
 	}
@@ -380,12 +472,40 @@ class Person extends BaseVertex {
 		this.gender = gender;
 		this.occupation = occupation;
 	}
+
+	@Override
+	public int hashCode() {
+		return 31 * id + 17;
+	}
 }
 
 class Relationship extends BaseEdge {
-	String relationship;
+	private String relationship;
 
-	public Relationship(final String relationship) {
+	private int identifier;
+
+	public Relationship(final int identifier, final String relationship) {
+		this.setRelationship(relationship);
+		this.setIdentifier(identifier);
+	}
+
+	public String getRelationship() {
+		fetch();
+		return relationship;
+	}
+
+	public void setRelationship(final String relationship) {
+		markModified();
 		this.relationship = relationship;
+	}
+
+	public int getIdentifier() {
+		fetch();
+		return identifier;
+	}
+
+	public void setIdentifier(final int identifier) {
+		markModified();
+		this.identifier = identifier;
 	}
 }
