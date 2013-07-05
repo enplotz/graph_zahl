@@ -1,7 +1,51 @@
-%!TEX root = ../../main.tex
+%!TEX root = ../main.tex
 
+%####################
 \begin{itemize}
-\item \emph{What types of queries are supported, i.e., point, range, navigation, and/or arbitrary?}
-\item \emph{What is the query language of the system? Is it declarative, functional, algebraic and/or imperative?}
-\item \emph{Are queries automatically optimized?}
+\item Single selection by the name of the vertex possible
+\begin{lstlisting}[caption=(Point query)]
+Person michael = db.getNamedVertex("Michael");
+\end{lstlisting}
+\item Predicate Query Language (PQL\footnote{http://wiki.infinitegraph.com/3.1/w/docs/PQL/jgdObjectQualification.html}) is used to scan Database (regular expression also allowed)
+\begin{lstlisting}[caption=(Range query)]
+Query<Person> personQuery = db.createQuery(
+	Person.class.getName(), 
+	"name=='Michael' && age<100");
+\end{lstlisting}
 \end{itemize}
+(Queries on the field "name" of the \textit{Person} class will have the optimal performance if there exist a graph index in this field.) \\
+
+%####################
+
+A Navigation API also exist and supports:
+\begin{itemize}
+\item simple breadth first navigation
+\item simple depth first navigation
+\item own path and result qualifiers are allowed
+\begin{itemize}
+\item \textit{path qualifier} is used validate a path
+\item \textit{result qualifier} is used to limit the results to a set that follows given rules
+\end{itemize}
+\item can fire own Callback function that processes the result
+\end{itemize}
+\begin{lstlisting}[caption=(Creating a simple Navigator)]
+Navigator navi = michael.navigate(
+Guide.SIMPLE_DEPTH_FIRST, Qualifier.FOREVER, 
+Qualifier.ANY, new NavigationResultHandler());
+\end{lstlisting}
+
+%#####################
+
+A simple result qualifier 
+\begin{lstlisting}[caption=(Result qualifier)]
+class IsMichaelQualifier implements Qualifier
+{
+    String name = new String("Michael");
+    public boolean qualify(Path currentPath)
+    {
+        return name.equals(((Person) (currentPath
+            .getFinalHop().getVertex())).getName());
+    }
+}
+\end{lstlisting}
+%####################
