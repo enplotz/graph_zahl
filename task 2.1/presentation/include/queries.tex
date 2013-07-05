@@ -55,13 +55,19 @@ function transClosureForVertex(v) {
 
 \begin{lstlisting}
 foreach (Edge e : db.getEdges()) {
-  Vertex v = e.source();
-  v.removeEdgeFromGraphView(e);
+  Vertex s = e.source();
+  Vertex t = e.target();
+  graphDB.removeEdgeFromGraphView(e);
   List<Vertex> transClosure
-    = transClosureForVertex(v);
-  if (!transClosure.contains(e.target())) {
-    print("Edge e is a bridge!");
+    = transClosureForVertex(s);
+  if (transClosure.contains(t)) {
+    return("Edge e is no a bridge!");
   }
+  transClosure = transClosureForVertex(t);
+  if (transClosure.contains(s)) {
+    return("Edge e is no a bridge!");
+    }
+  return("Edge e is a bridge!");
 }
 \end{lstlisting}
 \end{frame}
