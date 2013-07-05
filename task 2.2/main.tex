@@ -1,0 +1,87 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\useinnertheme{rectangles}
+\useoutertheme{infolines}
+\usecolortheme{orchid}
+\setbeamercovered{transparent}
+\beamertemplatenavigationsymbolsempty
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage[utf8x]{inputenc}
+\usepackage{lmodern}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{mathtools}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage[numbers,sort&compress]{natbib}
+\bibliographystyle{plain}
+\usepackage{subfig}
+
+\title[Query Results]{\textsf{Query Results}}
+\subtitle{with InfiniteGraph}
+\author[JE,TG,JH,MH,FJ,JM,MS]{Jens \textit{Erat},
+Todor \textit{Georgiev},
+J\"{u}rgen \textit{H\"{o}lsch},
+Manuel \textit{Hotz},
+Florian \textit{Junghanns},
+Jens \textit{Metzner},
+Marc \textit{Spicker}}
+\institute[]{Universität Konstanz}
+\date{\today}
+
+\newcommand{\dquote}[1]{``#1''}
+
+\begin{document}
+
+\lstset{
+language=Java,
+keywordstyle=\color{purple},
+captionpos=b,
+showstringspaces=false,
+basicstyle=\ttfamily
+}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%##########################################################################################
+
+\begin{frame}
+\frametitle{Friends of friends}
+
+\includegraphics[width=150px]{imgs/fof_query}
+
+\includegraphics[width=340px]{imgs/fof_result}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Transitive Closure}
+
+\includegraphics[width=150px]{imgs/transitive_query}
+
+\includegraphics[width=340px]{imgs/transitive_result}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bridges}
+
+\includegraphics[width=150px]{imgs/bridge_query}
+
+\includegraphics[width=340px]{imgs/bridge_result}
+
+\end{frame}
+%##########################################################################################
+
+
+
+\end{document}
